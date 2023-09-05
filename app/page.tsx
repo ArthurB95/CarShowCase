@@ -41,6 +41,7 @@ export default function Home() {
   };
 
   useEffect(() => {
+    console.log()
     getCars();
   }, [fuel, year, limit, manufacturer, model]);
 
@@ -57,11 +58,11 @@ export default function Home() {
         </div>
 
         <div className="home__filters">
-          <SearchBar />
+          <SearchBar setManufacturer={setManufacturer} setModel={setModel}/>
 
           <div className="home__filter-container">
-            <CustomFilter title="fuel" options={fuels} />
-            <CustomFilter title="year" options={yearsOfProduction} />
+            <CustomFilter title="fuel" options={fuels} setFilter={setFuel}/>
+            <CustomFilter title="year" options={yearsOfProduction} setFilter={setYear}/>
           </div>
         </div>
 
@@ -73,9 +74,22 @@ export default function Home() {
               ))}
             </div>
 
+            {loading && (
+              <div className="mt-16 w-full flex-center">
+                <Image 
+                src="/loader.svg"
+                alt="loader"
+                width={50}
+                height={50}
+                className="object-contain"
+                />
+              </div>
+            )}
+
             <ShowMore
-              pageNumber={(limit || 10) / 10}
-              isNext={(limit || 10) > allCars.length}
+              pageNumber={limit / 10}
+              isNext={limit > allCars.length}
+              setLimit={setLimit}
             />
           </section>
         ) : (
